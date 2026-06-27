@@ -60,8 +60,14 @@ cp .env.example .env          # set BOT_TOKEN and ALLOWED_USER_IDS
 Install as a global tool (like `tgn`/`tgb`):
 
 ```bash
-uv tool install .             # provides the `tgterm` command
+uv tool install . --reinstall   # provides the `tgterm` command
+mkdir -p ~/.config/tgterm
+cp .env ~/.config/tgterm/.env   # tgterm reads config from here
+tgterm                          # runs from any directory
 ```
+
+Config is read from `~/.config/tgterm/.env` first, then `./.env` in the current
+directory. Session state is kept in `~/.config/tgterm/bot_state.json`.
 
 Find your numeric id: message the bot; if not whitelisted it replies with your
 id. Put it in `ALLOWED_USER_IDS` and restart.

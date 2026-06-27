@@ -41,18 +41,26 @@ log = logging.getLogger("terminal-bot")
 # --- Config ---------------------------------------------------------------
 
 
-def _load_dotenv(path: str = ".env") -> None:
-    """Load KEY=VALUE lines from a .env in the working dir; don't override env."""
-    try:
-        with open(path) as fh:
-            for line in fh:
-                line = line.strip()
-                if not line or line.startswith("#") or "=" not in line:
-                    continue
-                key, _, val = line.partition("=")
-                os.environ.setdefault(key.strip(), val.strip())
-    except OSError:
-        pass
+CONFIG_DIR = os.path.expanduser("~/.config/tgterm")
+
+
+def _load_dotenv() -> None:
+    """Load KEY=VALUE lines from .env; don't override already-set env vars.
+
+    Looks in ~/.config/tgterm/.env first (for global `uv tool install`), then
+    ./.env in the working dir (for running from a checkout).
+    """
+    for path in (os.path.join(CONFIG_DIR, ".env"), ".env"):
+        try:
+            with open(path) as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    key, _, val = line.partition("=")
+                    os.environ.setdefault(key.strip(), val.strip())
+        except OSError:
+            continue
 
 
 _load_dotenv()
@@ -63,7 +71,7 @@ ALLOWED_USER_IDS = {
 }
 DEFAULT_TIMEOUT = int(os.environ.get("CMD_TIMEOUT", "30"))
 VIM_LEADER = os.environ.get("VIM_LEADER", "Space")  # tmux key name; Space = " "
-STATE_FILE = os.path.expanduser("~/.config/tgnb/bot_state.json")
+STATE_FILE = os.path.join(CONFIG_DIR, "bot_state.json")
 TG_LIMIT = 4096
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[a-zA-Z]|\x1b\][^\x07]*(?:\x07|\x1b\\)|\x1b[=>]|\r")
