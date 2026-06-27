@@ -40,6 +40,23 @@ log = logging.getLogger("terminal-bot")
 
 # --- Config ---------------------------------------------------------------
 
+
+def _load_dotenv(path: str = ".env") -> None:
+    """Load KEY=VALUE lines from a .env in the working dir; don't override env."""
+    try:
+        with open(path) as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, val = line.partition("=")
+                os.environ.setdefault(key.strip(), val.strip())
+    except OSError:
+        pass
+
+
+_load_dotenv()
+
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "").strip()
 ALLOWED_USER_IDS = {
     int(x) for x in os.environ.get("ALLOWED_USER_IDS", "").replace(" ", "").split(",") if x
