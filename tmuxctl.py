@@ -28,7 +28,7 @@ def server_init() -> None:
 
 
 def has_session(full: str) -> bool:
-    return _tmux("has-session", "-t", f"={full}").returncode == 0
+    return _tmux("has-session", "-t", full).returncode == 0
 
 
 def new_session(full: str) -> None:
@@ -39,7 +39,7 @@ def new_session(full: str) -> None:
 
 
 def kill_session(full: str) -> None:
-    _tmux("kill-session", "-t", f"={full}")
+    _tmux("kill-session", "-t", full)
 
 
 def list_sessions(prefix: str) -> list[str]:
@@ -54,7 +54,7 @@ def list_sessions(prefix: str) -> list[str]:
 
 
 def capture(full: str, history: bool = False, color: bool = False) -> str:
-    args = ["capture-pane", "-t", f"={full}", "-p"]
+    args = ["capture-pane", "-t", full, "-p"]
     if color:
         args.append("-e")
     if history:
@@ -63,12 +63,12 @@ def capture(full: str, history: bool = False, color: bool = False) -> str:
 
 
 def send_literal(full: str, text: str) -> None:
-    _tmux("send-keys", "-t", f"={full}", "-l", "--", text)
+    _tmux("send-keys", "-t", full, "-l", "--", text)
 
 
 def send_key(full: str, key: str) -> None:
     """Send a named key like Enter, Escape, Tab, Space, C-c."""
-    _tmux("send-keys", "-t", f"={full}", key)
+    _tmux("send-keys", "-t", full, key)
 
 
 def run_command(full: str, cmd: str, timeout: float) -> tuple[str, int | None, bool]:
