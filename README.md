@@ -49,13 +49,18 @@ interactive TUI works via raw mode if you want it.
 
 ## Setup
 
-Requires `tmux` installed (`pacman -S tmux`).
+Requires `tmux` (`pacman -S tmux`) and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
+uv sync                       # create .venv + install deps
 cp .env.example .env          # set BOT_TOKEN and ALLOWED_USER_IDS
-./run.sh
+./run.sh                      # = uv run tgterm
+```
+
+Install as a global tool (like `tgn`/`tgb`):
+
+```bash
+uv tool install .             # provides the `tgterm` command
 ```
 
 Find your numeric id: message the bot; if not whitelisted it replies with your
@@ -75,6 +80,6 @@ Full shell access as the user running the bot.
 ## Tests
 
 ```bash
-.venv/bin/python test_logic.py   # pure logic: marker slicing + render (no tmux)
-.venv/bin/python test_tmux.py    # live tmux integration (needs a real tmux server)
+uv run python test_logic.py   # pure logic: marker slicing + render (no tmux)
+uv run python test_tmux.py    # live tmux integration (needs a real tmux server)
 ```

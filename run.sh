@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Load .env and start the bot using the project venv.
+# Load .env and start the bot via uv.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -13,4 +13,4 @@ set -a
 source .env
 set +a
 
-exec .venv/bin/python bot.py
+exec uv run tgterm
