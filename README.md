@@ -60,7 +60,7 @@ cp .env.example .env          # set BOT_TOKEN and ALLOWED_USER_IDS
 Install as a global tool (like `tgn`/`tgb`):
 
 ```bash
-uv tool install . --reinstall   # provides the `tgterm` command
+uv tool install .               # provides the `tgterm` command
 mkdir -p ~/.config/tgterm
 cp .env ~/.config/tgterm/.env   # tgterm reads config from here
 tgterm                          # runs from any directory
